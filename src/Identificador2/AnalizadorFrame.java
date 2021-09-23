@@ -61,6 +61,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Mostrador de estado");
 
+        info.setEditable(false);
         info.setColumns(20);
         info.setRows(5);
         jScrollPane1.setViewportView(info);
@@ -104,9 +105,9 @@ public class AnalizadorFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -133,6 +134,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
        //Main main = new Main();
        Analizador analizador = new Analizador();
        String cadena=cadenaTxt.getText();
+       info.setText("");
         System.out.println("cadena es "+cadena);
        ArrayList<String> res=analizador.getToken(cadena);
         System.out.println("res "+ res);

@@ -164,28 +164,28 @@ public class Analizador {
             boolean seguirLeyendo = true;
             char tmp;
             String estadoA = null;
+            System.out.println("NO SIGUE LEYENDO 2");
 
             while ((seguirLeyendo) && (posicion < palabra.length())) {
                 //System.out.println("tmp en while "+tmp);
-                if (Character.isSpaceChar(tmp = palabra.charAt(posicion)) || Character.isSpace(tmp)) {
+                tmp = palabra.charAt(posicion);
+                if (Character.isSpaceChar(tmp) || Character.isSpace(tmp)) {
                     seguirLeyendo = false;
-                   
-                    //String tok = "Es un espacio o salto de linea ";
-                    //lista.add(tok);
-                   
+                    System.out.println("NO SIGUE LEYENDO 1");
+
                 } else {
                     // para mi automata
 
                     int estadoTemporal = getSiguienteEstado(estadoActual, getIntCaracter(tmp));
-                    if (estadoTemporal==0) {
-                        estadoTemporal=-1;
+                    if (estadoTemporal == 0) {
+                        estadoTemporal = -1;
                     }
                     //                                          4,0
                     System.out.println("Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal);
                     token += tmp;
                     estadoActual = estadoTemporal;
                     if (estadoActual == -1) {
-                        seguirLeyendo=false;
+                        seguirLeyendo = false;
                     }
                     estadoA = getEstadoAceptacion(estadoActual);
 
@@ -194,11 +194,14 @@ public class Analizador {
                 }
                 posicion++;
             }
-            String msj = "*********Termino en el estado " + estadoA + " token actual : " + token;
-            System.out.println(msj);
+            if (estadoA != null) {
+                String msj = "*********Termino en el estado " + estadoA + " token actual : " + token;
+                System.out.println(msj);
 
-            //System.out.println("*********Termino en el estado "+ getEstadoAceptacion(estadoActual) + " token actual : "+token);
-            lista.add(msj);
+                //System.out.println("*********Termino en el estado "+ getEstadoAceptacion(estadoActual) + " token actual : "+token);
+                lista.add(msj);
+
+            }
 
             // verificar el estado de aceptación
         }
