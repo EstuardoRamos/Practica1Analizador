@@ -1,8 +1,14 @@
 package Identificador2;
 
 import java.awt.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 
 
@@ -17,6 +23,7 @@ public class Analizador {
     int estadosFinalizacion[] = new int[7];
     String descripcionFinalizacion[] = new String[7];
     int estadoActual = 0;
+    int contadorErrores = 0;
 
     // filas s1 --> 1 s2 -> 2
     // \digito --> 1
@@ -53,27 +60,27 @@ public class Analizador {
 
         //numero entero
         estadosFinalizacion[0]=1;
-        descripcionFinalizacion[0]="Numero entero";
+        descripcionFinalizacion[0]="NUMERO ENTERO";
         //numero flotante
         estadosFinalizacion[1]=3;
-        descripcionFinalizacion[1]="Numero double";
+        descripcionFinalizacion[1]="DECIMAL";
         
         //Identifiacdor
         estadosFinalizacion[2]=4;
-        descripcionFinalizacion[2]="Identificador";
+        descripcionFinalizacion[2]="IDENTIFICADOR";
         estadosFinalizacion[3]=5;
-        descripcionFinalizacion[3]="Identificador";
+        descripcionFinalizacion[3]="IDENTIFICADOR";
         
         //Signoo de puntucion
         estadosFinalizacion[4]=6;
-        descripcionFinalizacion[4]="Signo de puntucion";
+        descripcionFinalizacion[4]="SIGNO DE PUNTUACION";
         
         //Signo agrupacion
         estadosFinalizacion[5]=7;
-        descripcionFinalizacion[5]="Signo de agrupacion";
+        descripcionFinalizacion[5]="SIGNO DE AGRUPACION";
         //operadores
         estadosFinalizacion[6]=8;
-        descripcionFinalizacion[6]="Operador";
+        descripcionFinalizacion[6]="OPERADOR";
     }
 
    /* public static void main(String[] args) {
@@ -186,6 +193,7 @@ public class Analizador {
                     estadoActual = estadoTemporal;
                     if (estadoActual == -1) {
                         seguirLeyendo = false;
+                        contadorErrores++;
                     }
                     estadoA = getEstadoAceptacion(estadoActual);
 
@@ -195,8 +203,9 @@ public class Analizador {
                 posicion++;
             }
             if (estadoA != null) {
-                String msj = "*********Termino en el estado " + estadoA + " token actual : " + token;
+                String msj = "***TOKEN " + estadoA + "  : " + token;
                 System.out.println(msj);
+                System.out.println("Cantidad de errores: "+contadorErrores);
 
                 //System.out.println("*********Termino en el estado "+ getEstadoAceptacion(estadoActual) + " token actual : "+token);
                 lista.add(msj);
@@ -244,5 +253,23 @@ public class Analizador {
             esAgru=true;
         }
         return esAgru;
+    }
+    
+    public void cargarArchivos(JTextArea cadenaTxt){
+        JFileChooser fc = new JFileChooser();
+        fc.showOpenDialog(null);
+        File archivo = fc.getSelectedFile();
+        try {
+            FileReader fr = new FileReader(archivo);
+            BufferedReader br= new BufferedReader(fr);
+            String texto="";
+            String linea="";
+            while((linea=br.readLine()) != null) {
+                texto+=linea+"\n";
+            }
+            cadenaTxt.setText(texto);
+            JOptionPane.showMessageDialog(null, "Archivo cargado puede analizarlo");
+        } catch (Exception e) {
+        }
     }
 }
