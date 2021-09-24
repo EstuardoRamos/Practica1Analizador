@@ -161,9 +161,10 @@ public class Analizador {
         return res;
     }
 
-    public ArrayList getToken(String palabra) {
+    public ArrayList getToken(String palabra, JTextArea estados) {
 
         ArrayList<String> lista = new ArrayList();
+        ArrayList<Token> tokens = new ArrayList();
         String token1 = "";
         while (posicion < palabra.length()) {
             estadoActual = 0;
@@ -189,6 +190,8 @@ public class Analizador {
                     }
                     //                                          4,0
                     System.out.println("Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal);
+                    String moviminetos="Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal+"\n";
+                    estados.append(moviminetos);
                     token += tmp;
                     estadoActual = estadoTemporal;
                     if (estadoActual == -1) {
@@ -204,6 +207,8 @@ public class Analizador {
             }
             if (estadoA != null) {
                 String msj = "***TOKEN " + estadoA + "  : " + token;
+                Token tokenO = new Token(estadoA,token);
+                tokens.add(tokenO);
                 System.out.println(msj);
                 System.out.println("Cantidad de errores: "+contadorErrores);
 
@@ -214,6 +219,7 @@ public class Analizador {
 
             // verificar el estado de aceptación
         }
+        System.out.println("tok"+tokens.toString()+"\n");
         return lista;
     }
     
