@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
  * @author Estuardo Ramos
  */
 public class AnalizadorFrame extends javax.swing.JFrame {
+    ReportesFrame rf;
+    Analizador analizador = new Analizador();
 
     /**
      * Creates new form AnalizadorFrame
@@ -50,6 +52,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TxtAreaEstados = new javax.swing.JTextArea();
+        reportes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,6 +96,13 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         TxtAreaEstados.setRows(5);
         jScrollPane3.setViewportView(TxtAreaEstados);
 
+        reportes.setText("Reportes");
+        reportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -112,12 +122,17 @@ public class AnalizadorFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Analizador)
-                    .addComponent(cadena, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSelectTxt))
-                .addGap(85, 85, 85))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Analizador)
+                            .addComponent(cadena, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSelectTxt))
+                        .addGap(85, 85, 85))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(reportes)
+                        .addGap(131, 131, 131))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +148,9 @@ public class AnalizadorFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(204, 204, 204)
+                        .addGap(120, 120, 120)
+                        .addComponent(reportes)
+                        .addGap(54, 54, 54)
                         .addComponent(cadena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
@@ -172,7 +189,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
 
     private void AnalizadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizadorActionPerformed
        //Main main = new Main();
-       Analizador analizador = new Analizador();
+       
        String cadena=cadenaTxt.getText();
        info.setText("");
         System.out.println("cadena es "+cadena);
@@ -190,6 +207,13 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         Analizador analizador = new Analizador();
         analizador.cargarArchivos(cadenaTxt);
     }//GEN-LAST:event_btnSelectTxtActionPerformed
+
+    private void reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesActionPerformed
+        ReportesFrame reporF = new ReportesFrame();
+        
+        reporF.llenarTabla(analizador.getTokens());
+        reporF.setVisible(true);
+    }//GEN-LAST:event_reportesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,5 +264,6 @@ public class AnalizadorFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton reportes;
     // End of variables declaration//GEN-END:variables
 }

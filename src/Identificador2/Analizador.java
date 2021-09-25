@@ -24,6 +24,11 @@ public class Analizador {
     String descripcionFinalizacion[] = new String[7];
     int estadoActual = 0;
     int contadorErrores = 0;
+    Token token =new Token();
+    Token tokensT[];
+    ArrayList<Token> tokens = new ArrayList();
+    int i=0;
+    
 
     // filas s1 --> 1 s2 -> 2
     // \digito --> 1
@@ -60,27 +65,27 @@ public class Analizador {
 
         //numero entero
         estadosFinalizacion[0]=1;
-        descripcionFinalizacion[0]="NUMERO ENTERO";
+        descripcionFinalizacion[0]="NUMERO "+TipoToken.ENTERO;
         //numero flotante
         estadosFinalizacion[1]=3;
-        descripcionFinalizacion[1]="DECIMAL";
+        descripcionFinalizacion[1]="NUMERO "+TipoToken.DECIMAL;
         
         //Identifiacdor
         estadosFinalizacion[2]=4;
-        descripcionFinalizacion[2]="IDENTIFICADOR";
+        descripcionFinalizacion[2]=TipoToken.IDENTIFICADOR+"";
         estadosFinalizacion[3]=5;
-        descripcionFinalizacion[3]="IDENTIFICADOR";
+        descripcionFinalizacion[3]=TipoToken.IDENTIFICADOR+"";
         
         //Signoo de puntucion
         estadosFinalizacion[4]=6;
-        descripcionFinalizacion[4]="SIGNO DE PUNTUACION";
+        descripcionFinalizacion[4]="SIGNO DE "+TipoToken.PUNTUACION;
         
         //Signo agrupacion
         estadosFinalizacion[5]=7;
-        descripcionFinalizacion[5]="SIGNO DE AGRUPACION";
+        descripcionFinalizacion[5]="SIGNO DE "+TipoToken.AGRUPACION;
         //operadores
         estadosFinalizacion[6]=8;
-        descripcionFinalizacion[6]="OPERADOR";
+        descripcionFinalizacion[6]=""+TipoToken.OPERADOR;
     }
 
    /* public static void main(String[] args) {
@@ -110,6 +115,16 @@ public class Analizador {
             //////////////////    0     y 6
         }
         return resultado;
+    }
+     
+    public enum TipoToken{
+        IDENTIFICADOR,
+        ENTERO,
+        DECIMAL,
+        AGRUPACION,
+        PUNTUACION,
+        OPERADOR,
+        ERROR
     }
 
 
@@ -164,7 +179,7 @@ public class Analizador {
     public ArrayList getToken(String palabra, JTextArea estados) {
 
         ArrayList<String> lista = new ArrayList();
-        ArrayList<Token> tokens = new ArrayList();
+        
         String token1 = "";
         while (posicion < palabra.length()) {
             estadoActual = 0;
@@ -180,6 +195,7 @@ public class Analizador {
                 if (Character.isSpaceChar(tmp) || Character.isSpace(tmp)) {
                     seguirLeyendo = false;
                     System.out.println("NO SIGUE LEYENDO 1");
+                    
 
                 } else {
                     // para mi automata
@@ -206,9 +222,12 @@ public class Analizador {
                 posicion++;
             }
             if (estadoA != null) {
+                
                 String msj = "***TOKEN " + estadoA + "  : " + token;
                 Token tokenO = new Token(estadoA,token);
                 tokens.add(tokenO);
+                //tokensT[i]=tokenO;
+                
                 System.out.println(msj);
                 System.out.println("Cantidad de errores: "+contadorErrores);
 
@@ -220,9 +239,15 @@ public class Analizador {
             // verificar el estado de aceptación
         }
         System.out.println("tok"+tokens.toString()+"\n");
+        
+        ReportesFrame rf= new ReportesFrame();
+        rf.llenarTabla(tokens);
+        //rf.setVisible(true);
+        System.out.println("cant tok "+i);
         return lista;
     }
     
+    //Verifica si es signo de puntuacion
     public boolean esSignoDePuntuacion(char sig){
         boolean es=false;
         switch(sig){
@@ -242,7 +267,7 @@ public class Analizador {
         return es;
     }
     
-    
+    //Verfica si es signo de agrupacio
     public static boolean esSignoAgrupacion(char signo){
         boolean esAgru=false;
         char parantesis='(';
@@ -251,7 +276,16 @@ public class Analizador {
         }
         return esAgru;
     }
+
+    public ArrayList<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(ArrayList<Token> tokens) {
+        this.tokens = tokens;
+    }
     
+    //Verifica si es un operador
     public static boolean esOperador(char signo){
         boolean esAgru=false;
         char parantesis='(';
@@ -261,6 +295,7 @@ public class Analizador {
         return esAgru;
     }
     
+    //Lee un archivo de entrada y lo carga al text area
     public void cargarArchivos(JTextArea cadenaTxt){
         JFileChooser fc = new JFileChooser();
         fc.showOpenDialog(null);
