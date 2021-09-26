@@ -5,11 +5,6 @@
  */
 package Identificador2;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,7 +12,7 @@ import javax.swing.JOptionPane;
  * @author Estuardo Ramos
  */
 public class AnalizadorFrame extends javax.swing.JFrame {
-    ReportesFrame rf;
+    ReportesFrame reporF = new ReportesFrame();
     Analizador analizador = new Analizador();
 
     /**
@@ -189,15 +184,26 @@ public class AnalizadorFrame extends javax.swing.JFrame {
 
     private void AnalizadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizadorActionPerformed
        //Main main = new Main();
-       
+       Analizador analizador1 = new Analizador();
        String cadena=cadenaTxt.getText();
        info.setText("");
+       TxtAreaEstados.setText("");
         System.out.println("cadena es "+cadena);
-       ArrayList<String> res=analizador.getToken(cadena, TxtAreaEstados);
-        System.out.println("res "+ res);
-        for (int i = 0; i < res.size(); i++) {
-            info.append(res.get(i)+" \n");
+       analizador1.getToken(cadena,info, TxtAreaEstados);
+        try {
+            reporF.llenarTabla(analizador1.getTokens());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al insertar a tabla");
         }
+       
+        if (analizador1.getContadorErrores()==0) {
+            reportes.setVisible(true);
+        }else
+            reportes.setVisible(false);
+        //System.out.println("res "+ res);
+        /*for (int i = 0; i < res.size(); i++) {
+            info.append(res.get(i)+" \n");
+        }*/
        
         //main.getToken();
     }//GEN-LAST:event_AnalizadorActionPerformed
@@ -209,9 +215,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSelectTxtActionPerformed
 
     private void reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesActionPerformed
-        ReportesFrame reporF = new ReportesFrame();
         
-        reporF.llenarTabla(analizador.getTokens());
         reporF.setVisible(true);
     }//GEN-LAST:event_reportesActionPerformed
 

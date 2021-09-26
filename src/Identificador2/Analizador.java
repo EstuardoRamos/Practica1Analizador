@@ -19,6 +19,7 @@ public class Analizador {
 
     String palabra;
     int posicion = 0;
+    int posicionTmp = 0;
     int matriz[][] = new int[9][6];
     int estadosFinalizacion[] = new int[7];
     String descripcionFinalizacion[] = new String[7];
@@ -28,6 +29,7 @@ public class Analizador {
     Token tokensT[];
     ArrayList<Token> tokens = new ArrayList();
     int i=0;
+    int colum=0;
     
 
     // filas s1 --> 1 s2 -> 2
@@ -176,11 +178,10 @@ public class Analizador {
         return res;
     }
 
-    public ArrayList getToken(String palabra, JTextArea estados) {
+    public  ArrayList getToken(String palabra, JTextArea TOK, JTextArea estados) {
 
         ArrayList<String> lista = new ArrayList();
         
-        String token1 = "";
         while (posicion < palabra.length()) {
             estadoActual = 0;
             String token = "";
@@ -192,9 +193,16 @@ public class Analizador {
             while ((seguirLeyendo) && (posicion < palabra.length())) {
                 //System.out.println("tmp en while "+tmp);
                 tmp = palabra.charAt(posicion);
-                if (Character.isSpaceChar(tmp) || Character.isSpace(tmp)) {
+                if (Character.isSpaceChar(tmp) ) {
                     seguirLeyendo = false;
-                    System.out.println("NO SIGUE LEYENDO 1");
+                    System.out.println("space");
+                    
+                    } else if(Character.isSpace(tmp)) {
+                            
+                           seguirLeyendo = false;
+                    System.out.println("enter"); 
+                    posicionTmp=posicion;
+                    colum++;
                     
 
                 } else {
@@ -223,8 +231,9 @@ public class Analizador {
             }
             if (estadoA != null) {
                 
-                String msj = "***TOKEN " + estadoA + "  : " + token;
-                Token tokenO = new Token(estadoA,token);
+                String msj = "***TOKEN " + estadoA + "  : " + token +"\n";
+                Token tokenO = new Token(estadoA,token,posicion-posicionTmp,colum);
+                System.out.println(" Posicioon "+posicion+" - "+posicionTmp+"="+(posicion-posicionTmp));
                 tokens.add(tokenO);
                 //tokensT[i]=tokenO;
                 
@@ -233,6 +242,8 @@ public class Analizador {
 
                 //System.out.println("*********Termino en el estado "+ getEstadoAceptacion(estadoActual) + " token actual : "+token);
                 lista.add(msj);
+                TOK.append(msj);
+                i++;
 
             }
 
@@ -240,11 +251,19 @@ public class Analizador {
         }
         System.out.println("tok"+tokens.toString()+"\n");
         
-        ReportesFrame rf= new ReportesFrame();
-        rf.llenarTabla(tokens);
+        
+        //rf.llenarTabla(tokens);
         //rf.setVisible(true);
         System.out.println("cant tok "+i);
         return lista;
+    }
+
+    public int getContadorErrores() {
+        return contadorErrores;
+    }
+
+    public Token[] getTokensT() {
+        return tokensT;
     }
     
     //Verifica si es signo de puntuacion

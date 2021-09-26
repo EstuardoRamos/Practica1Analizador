@@ -23,6 +23,7 @@ public class Token {
         this.lexema = lexema;
         this.fila = fila;
         this.columna = columna;
+        this.posicion=fila+"+"+columna;
     }
 
     public Token(String nombre, String lexema) {
