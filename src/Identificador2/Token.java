@@ -11,7 +11,7 @@ public class Token {
     String lexema;
     int fila;
     int columna;
-    String posicion= fila+" , "+columna;
+    String posicion;
 
     public Token() {
     }
@@ -23,7 +23,7 @@ public class Token {
         this.lexema = lexema;
         this.fila = fila;
         this.columna = columna;
-        this.posicion=fila+"+"+columna;
+        this.posicion="Fila: "+fila+", Columna"+columna;
     }
 
     public Token(String nombre, String lexema) {

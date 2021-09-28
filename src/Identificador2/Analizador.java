@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 
@@ -19,7 +20,7 @@ public class Analizador {
 
     String palabra;
     int posicion = 0;
-    int posicionTmp = 0;
+    int columTmp = 1;
     int matriz[][] = new int[9][6];
     int estadosFinalizacion[] = new int[7];
     String descripcionFinalizacion[] = new String[7];
@@ -28,8 +29,11 @@ public class Analizador {
     Token token =new Token();
     Token tokensT[];
     ArrayList<Token> tokens = new ArrayList();
+    ArrayList<Token> tokensError = new ArrayList();
     int i=0;
-    int colum=0;
+    int fila=1;
+    int columna = 1;
+        int filaF = 1;
     
 
     // filas s1 --> 1 s2 -> 2
@@ -162,7 +166,7 @@ public class Analizador {
     }
 
     public String getEstadoAceptacion(int i){
-        String res = "Error";
+        String res = "ERROR";
         int indice = 0;
         for (int estadoAceptacion : estadosFinalizacion) {
             
@@ -170,7 +174,7 @@ public class Analizador {
                 res = descripcionFinalizacion[indice];
                 break;
             }else {
-                res="error dato";
+                res="ERROR";
             }
             indice++;
         }
@@ -178,32 +182,35 @@ public class Analizador {
         return res;
     }
 
-    public  ArrayList getToken(String palabra, JTextArea TOK, JTextArea estados) {
+    public ArrayList getToken(String palabra, JTextArea TOK, JTextArea estados) {
 
         ArrayList<String> lista = new ArrayList();
-        
+
         while (posicion < palabra.length()) {
             estadoActual = 0;
             String token = "";
             boolean seguirLeyendo = true;
             char tmp;
             String estadoA = null;
-            System.out.println("NO SIGUE LEYENDO 2");
+            //Token tokenO = new Token();
+            //Token tokenErrores = new Token();
 
             while ((seguirLeyendo) && (posicion < palabra.length())) {
                 //System.out.println("tmp en while "+tmp);
                 tmp = palabra.charAt(posicion);
-                if (Character.isSpaceChar(tmp) ) {
+
+                if (Character.isSpaceChar(tmp)) {
                     seguirLeyendo = false;
                     System.out.println("space");
+
+                } else if (Character.isSpace(tmp)) {
+
+                    seguirLeyendo = false;
                     
-                    } else if(Character.isSpace(tmp)) {
-                            
-                           seguirLeyendo = false;
-                    System.out.println("enter"); 
-                    posicionTmp=posicion;
-                    colum++;
                     
+                    columTmp = 0;
+                    fila++;
+                    System.out.println("enter reinicio a posicion "+fila+" , "+columTmp);
 
                 } else {
                     // para mi automata
@@ -211,34 +218,50 @@ public class Analizador {
                     int estadoTemporal = getSiguienteEstado(estadoActual, getIntCaracter(tmp));
                     if (estadoTemporal == 0) {
                         estadoTemporal = -1;
+                        
                     }
                     //                                          4,0
                     System.out.println("Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal);
-                    String moviminetos="Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal+"\n";
+                    //String moviminetos = "Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal + "\n";
+                    String moviminetos = "S" + estadoActual + " --------- "  + tmp + "-------->  S" + estadoTemporal + "\n";
                     estados.append(moviminetos);
                     token += tmp;
                     estadoActual = estadoTemporal;
+                    
+                    estadoA = getEstadoAceptacion(estadoActual);
                     if (estadoActual == -1) {
                         seguirLeyendo = false;
                         contadorErrores++;
+                        Token tokenErrores=new Token(estadoA,token,fila,columTmp);
+                        tokensError.add(tokenErrores);
                     }
-                    estadoA = getEstadoAceptacion(estadoActual);
 
+                    //columTmp=posicion;
                     System.out.println(tmp);
+                    System.out.println("Fila " + fila + " Columna " + columTmp);
+                    columna = columTmp;
+                    filaF = fila;
 
                 }
+                //
+                columTmp++;
                 posicion++;
             }
             if (estadoA != null) {
+
+                Token tokenO = new Token(estadoA, token, filaF, columna);
+
+                String msj = "***TOKEN " + estadoA + "  : " + token + "\n";
                 
-                String msj = "***TOKEN " + estadoA + "  : " + token +"\n";
-                Token tokenO = new Token(estadoA,token,posicion-posicionTmp,colum);
-                System.out.println(" Posicioon "+posicion+" - "+posicionTmp+"="+(posicion-posicionTmp));
+                //Token tokenO = new Token();
+                System.out.println("Posicion del token es  Fila " + fila + "Columna " + columTmp);
+                //System.out.println(" Posicioon "+posicion+" - "+columTmp+"="+(posicion-columTmp));
                 tokens.add(tokenO);
-                //tokensT[i]=tokenO;
                 
+                //tokensT[i]=tokenO;
+
                 System.out.println(msj);
-                System.out.println("Cantidad de errores: "+contadorErrores);
+                
 
                 //System.out.println("*********Termino en el estado "+ getEstadoAceptacion(estadoActual) + " token actual : "+token);
                 lista.add(msj);
@@ -249,12 +272,12 @@ public class Analizador {
 
             // verificar el estado de aceptación
         }
-        System.out.println("tok"+tokens.toString()+"\n");
-        
-        
+        System.out.println("Cantidad de errores: " + contadorErrores);
+        System.out.println("tok" + tokens.toString() + "\n");
+
         //rf.llenarTabla(tokens);
         //rf.setVisible(true);
-        System.out.println("cant tok "+i);
+        //System.out.println("cant tok " + i);
         return lista;
     }
 
@@ -264,6 +287,10 @@ public class Analizador {
 
     public Token[] getTokensT() {
         return tokensT;
+    }
+
+    public ArrayList<Token> getTokensError() {
+        return tokensError;
     }
     
     //Verifica si es signo de puntuacion
@@ -332,4 +359,6 @@ public class Analizador {
         } catch (Exception e) {
         }
     }
+    
+    
 }
