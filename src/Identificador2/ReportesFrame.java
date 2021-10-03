@@ -6,6 +6,8 @@
 package Identificador2;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,7 +20,7 @@ public class ReportesFrame extends javax.swing.JFrame {
      */
     public ReportesFrame() {
         initComponents();
-        
+
         //reporteTokens.setValueAt(token.getNombre(), 1, 1);
     }
 
@@ -34,6 +36,8 @@ public class ReportesFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         reporteTokens = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableCant = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,28 +170,45 @@ public class ReportesFrame extends javax.swing.JFrame {
             }
         });
 
+        tableCant.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tableCant);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85)
-                .addComponent(jButton1)
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(92, 92, 92)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(486, 486, 486)
+                        .addComponent(jButton1)))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(107, 107, 107)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(307, 307, 307)
-                        .addComponent(jButton1)))
-                .addContainerGap(164, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addComponent(jButton1)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         pack();
@@ -232,25 +253,93 @@ public class ReportesFrame extends javax.swing.JFrame {
             }
         });
     }
-    
-    public  void llenarTabla(ArrayList<Token> token){
-        int i=0;
-        
-        /*Token token = new Token("identificador", "hola");
+
+    public void llenarTabla(ArrayList<Token> token) {
+        try {
+            int i = 0;
+
+            /*Token token = new Token("identificador", "hola");
         reporteTokens.setValueAt(token.getNombre(), 1, 0);
         reporteTokens.setValueAt(token.getLexema(), 1, 1);*/
-        
-        for (Token token1 : token) {
-            reporteTokens.setValueAt(token1.getNombre(), i, 0);
-            reporteTokens.setValueAt(token1.getLexema(), i, 1);
-            reporteTokens.setValueAt(token1.getPosicion(), i, 2);
-            i++;
+            for (Token token1 : token) {
+                reporteTokens.setValueAt(token1.getNombre(), i, 0);
+                reporteTokens.setValueAt(token1.getLexema(), i, 1);
+                reporteTokens.setValueAt(token1.getPosicion(), i, 2);
+                i++;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al insertar a tabla");
         }
+        /*DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("NOmbre");
+            model.addColumn("Lexema");
+            model.addColumn("Posicion");
+            model.setRowCount(token.size());
+            int i = 0;
+        for (Token token1 : token) {
+            //tableEror.setValueAt(token1.getNombre(), i, 0);
+            model.setValueAt(token1.getNombre(), i, 0);
+            model.setValueAt(token1.getLexema(), i, 1);
+            model.setValueAt(token1.getPosicion(), i, 2);
+            i++;
+        
+            //new Object[0]("hola", "adios");
+            
+            
+           reporteTokens.setModel(model);
+           //llenarTabla(tokensErrores, tableEror);  
+            
+        }*/
+    }
+
+    public void llenarTablaCantidad(ArrayList<Token> token) {
+        ArrayList<Token> noR = new ArrayList();
+        DefaultTableModel model = new DefaultTableModel();
+        //model.addColumn("NOmbre");
+        model.addColumn("Lexema");
+        model.addColumn("Token ");
+        model.addColumn("Cantidad ");
+        model.setRowCount(token.size());
+        int i = 0;
+        for (Token token1 : token) {
+            int cantidad = 0;
+            String lex = "";
+            for (Token token2 : token) {
+                if (token1.getLexema().equals(token2.getLexema())) {
+                    cantidad++;
+                }
+            }
+            if (agragarONo(noR, token1.getLexema())) {
+                noR.add(token1);
+                System.out.println("toke " + token1.getLexema() + "  " + cantidad);
+                model.setValueAt(token1.getLexema(), i, 0);
+                model.setValueAt(token1.getNombre(), i, 1);
+                model.setValueAt(cantidad, i, 2);
+                i++;
+            }
+
+            tableCant.setModel(model);
+            //llenarTabla(tokensErrores, tableEror);  
+
+        }
+        System.out.println("cant " + noR.toString());
+    }
+
+    public boolean agragarONo(ArrayList<Token> token, String tok) {
+        boolean yesNot = false;
+        for (Token token1 : token) {
+            if (token1.getLexema().equals(tok)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable reporteTokens;
+    private javax.swing.JTable tableCant;
     // End of variables declaration//GEN-END:variables
 }

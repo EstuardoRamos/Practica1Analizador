@@ -13,6 +13,7 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
@@ -29,14 +30,17 @@ public class AnalizadorFrame extends javax.swing.JFrame {
 
     ReportesFrame reporF = new ReportesFrame();
     Analizador analizador = new Analizador();
+    ManejadorArchivos mA = new ManejadorArchivos();
+    
 
     /**
      * Creates new form AnalizadorFrame
      */
     public AnalizadorFrame() {
         initComponents();
+        guardarC.setEnabled(false);
+        TextLineNumber tln = new TextLineNumber(cadenaTxt);
         //tableEror.setVisible(false);
-        
 
     }
 
@@ -55,8 +59,6 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         info = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        cadenaTxt = new javax.swing.JTextArea();
         btnSelectTxt = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -71,6 +73,10 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tableEror = new javax.swing.JTable();
+        guardarC = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        cadenaTxt = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,10 +97,6 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         info.setColumns(20);
         info.setRows(5);
         jScrollPane1.setViewportView(info);
-
-        cadenaTxt.setColumns(20);
-        cadenaTxt.setRows(5);
-        jScrollPane2.setViewportView(cadenaTxt);
 
         btnSelectTxt.setText("Seleccionar ");
         btnSelectTxt.addActionListener(new java.awt.event.ActionListener() {
@@ -214,30 +216,73 @@ public class AnalizadorFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        guardarC.setText("Guardar Cambios");
+        guardarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarCActionPerformed(evt);
+            }
+        });
+
+        cadenaTxt.setColumns(20);
+        cadenaTxt.setRows(5);
+        jScrollPane2.setViewportView(cadenaTxt);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 759, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 9, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(99, 99, 99)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane2))
-                .addGap(38, 38, 38)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(165, 165, 165)
+                                        .addComponent(jLabel3)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 29, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSelectTxt)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(reportes)
-                        .addComponent(Analizador)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(reportes))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(Analizador))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(guardarC))
+                            .addComponent(btnSelectTxt))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addComponent(panelBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -251,20 +296,30 @@ public class AnalizadorFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(41, 41, 41)
+                                        .addComponent(jLabel3))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnSelectTxt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(guardarC)
+                                .addGap(41, 41, 41)
+                                .addComponent(Analizador)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(54, 54, 54)
+                                .addComponent(reportes))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(Analizador))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(reportes))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(panelBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -275,14 +330,13 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 637, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -300,17 +354,10 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         String cadena = cadenaTxt.getText();
         info.setText("");
         TxtAreaEstados.setText("");
-
-        System.out.println("cadena es " + cadena);
         analizador1.getToken(cadena, info, TxtAreaEstados);
-        
-        try {
-            reporF.llenarTabla(analizador1.getTokens());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al insertar a tabla");
-        }
-        ArrayList<Token> tokensErrores = new ArrayList();
-        //tableEror.repaint();
+
+        reporF.llenarTabla(analizador1.getTokens());
+        reporF.llenarTablaCantidad(analizador1.getTokens());
         if (analizador1.getContadorErrores() == 0) {
             reportes.setVisible(true);
             tableEror.setVisible(false);
@@ -319,30 +366,15 @@ public class AnalizadorFrame extends javax.swing.JFrame {
             AnalizadorFrame an = new AnalizadorFrame();
             reportes.setVisible(false);
             tableEror.setVisible(true);
-            }
+        }
         llenarTabla(analizador1.tokensError, tableEror);
-        
-            //ArrayList<String> columnNames= new ArrayList<>();
-            //JTable tablaP = new JTable(rowData, columnNames);
-            //tableEror= new JTable(analizador1.getTokensError().size(),2);
-            //an.llenarTabla(analizador1.getTokensError(), tableEror);
-            //System.out.println("errores toks " + analizador1.getTokensError().toString());
-            
-        //llenarTabla(analizador1.getTokensError());
-        //tableEror = new JTable();
-
-        //tableEror.setVisible(true);
-        //System.out.println("res "+ res);
-        /*for (int i = 0; i < res.size(); i++) {
-            info.append(res.get(i)+" \n");
-        }*/
-        //main.getToken();
     }//GEN-LAST:event_AnalizadorActionPerformed
 
     private void btnSelectTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectTxtActionPerformed
         // TODO add your handling code here:
         Analizador analizador = new Analizador();
-        analizador.cargarArchivos(cadenaTxt);
+
+        mA.cargarArchivos(cadenaTxt, guardarC);
     }//GEN-LAST:event_btnSelectTxtActionPerformed
 
     private void reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesActionPerformed
@@ -358,6 +390,11 @@ public class AnalizadorFrame extends javax.swing.JFrame {
         buscarPalabra(txtResultado, texto);
 
     }//GEN-LAST:event_buscarActionPerformed
+
+    private void guardarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCActionPerformed
+        String cadena = cadenaTxt.getText();
+        mA.guardarCambios(cadena);
+    }//GEN-LAST:event_guardarCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -417,23 +454,20 @@ public class AnalizadorFrame extends javax.swing.JFrame {
 
     public void llenarTabla(ArrayList<Token> token, JTable tableEror) {
         DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("Error o simbolo");
-            model.addColumn("Posicion");
-            model.setRowCount(token.size());
-            int i = 0;
+        model.addColumn("Error o simbolo");
+        model.addColumn("Posicion");
+        model.setRowCount(token.size());
+        int i = 0;
         for (Token token1 : token) {
             //tableEror.setValueAt(token1.getNombre(), i, 0);
             model.setValueAt(token1.getLexema(), i, 0);
             model.setValueAt(token1.getPosicion(), i, 1);
             i++;
-        
+
             //new Object[0]("hola", "adios");
-            
-            
-           tableEror.setModel(model);
-           //llenarTabla(tokensErrores, tableEror);
-            
-            
+            tableEror.setModel(model);
+            //llenarTabla(tokensErrores, tableEror);
+
         }
     }
 
@@ -444,6 +478,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectTxt;
     private javax.swing.JButton buscar;
     private javax.swing.JTextArea cadenaTxt;
+    private javax.swing.JButton guardarC;
     private javax.swing.JTextArea info;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -451,6 +486,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

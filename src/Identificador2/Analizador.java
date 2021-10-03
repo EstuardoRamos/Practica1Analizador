@@ -1,17 +1,15 @@
 package Identificador2;
 
+import static Identificador2.VerificadorTipo.*;
 import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-
-
 
 /**
  * Main
@@ -26,15 +24,16 @@ public class Analizador {
     String descripcionFinalizacion[] = new String[7];
     int estadoActual = 0;
     int contadorErrores = 0;
-    Token token =new Token();
+    Token token = new Token();
     Token tokensT[];
     ArrayList<Token> tokens = new ArrayList();
     ArrayList<Token> tokensError = new ArrayList();
-    int i=0;
-    int fila=1;
+    int i = 0;
+    int fila = 1;
     int columna = 1;
-        int filaF = 1;
-    
+    int filaF = 1;
+    TipoDeDato tD;
+     
 
     // filas s1 --> 1 s2 -> 2
     // \digito --> 1
@@ -47,83 +46,72 @@ public class Analizador {
         matriz[0][3] = 6;
         matriz[0][4] = 7;
         matriz[0][5] = 8;
-        
+
         matriz[1][0] = 1;
         matriz[1][1] = 2;
         matriz[1][2] = -1;
-        
+
         matriz[2][0] = 3;
         matriz[2][1] = -1;
         matriz[2][2] = -1;
-        
+
         matriz[3][0] = 3;
         matriz[3][1] = -1;
         matriz[3][2] = -1;
-        
+
         matriz[4][0] = 5;
         matriz[4][1] = -1;
         matriz[4][2] = 4;
-        
+
         matriz[5][0] = 5;
         matriz[5][2] = 4;
         matriz[6][0] = -1;
-       
 
         //numero entero
-        estadosFinalizacion[0]=1;
-        descripcionFinalizacion[0]="NUMERO "+TipoToken.ENTERO;
-        //numero flotante
-        estadosFinalizacion[1]=3;
-        descripcionFinalizacion[1]="NUMERO "+TipoToken.DECIMAL;
-        
+        estadosFinalizacion[0] = 1;
+        descripcionFinalizacion[0] = tD.ENTERO.getTipo();
+        //numero decimal
+        estadosFinalizacion[1] = 3;
+        descripcionFinalizacion[1] = "NUMERO " + TipoToken.DECIMAL;
+
         //Identifiacdor
-        estadosFinalizacion[2]=4;
-        descripcionFinalizacion[2]=TipoToken.IDENTIFICADOR+"";
-        estadosFinalizacion[3]=5;
-        descripcionFinalizacion[3]=TipoToken.IDENTIFICADOR+"";
-        
+        estadosFinalizacion[2] = 4;
+        descripcionFinalizacion[2] = TipoToken.IDENTIFICADOR + "";
+        estadosFinalizacion[3] = 5;
+        descripcionFinalizacion[3] = TipoToken.IDENTIFICADOR + "";
+
         //Signoo de puntucion
-        estadosFinalizacion[4]=6;
-        descripcionFinalizacion[4]="SIGNO DE "+TipoToken.PUNTUACION;
-        
+        estadosFinalizacion[4] = 6;
+        descripcionFinalizacion[4] = tD.getPUNTUACION().getTipo() ;
+
         //Signo agrupacion
-        estadosFinalizacion[5]=7;
-        descripcionFinalizacion[5]="SIGNO DE "+TipoToken.AGRUPACION;
+        estadosFinalizacion[5] = 7;
+        descripcionFinalizacion[5] = "SIGNO DE " + TipoToken.AGRUPACION;
         //operadores
-        estadosFinalizacion[6]=8;
-        descripcionFinalizacion[6]=""+TipoToken.OPERADOR;
+        estadosFinalizacion[6] = 8;
+        descripcionFinalizacion[6] = "" + TipoToken.OPERADOR;
     }
 
-   /* public static void main(String[] args) {
+    /* public static void main(String[] args) {
         new Main();
     }*/
-
     public Analizador() {
-        /* Scanner scanner = new Scanner(System.in);
-        System.out.print("Ingrese la palabra: ");
-        palabra = scanner.nextLine();*/
 
-        
-        /*
-         * for (char caracter : palabra.toCharArray()) { System.out.println(caracter); }
-         */
-
-        //scanner.close();
     }
 
     //revisa movimiento den la matriz
     public int getSiguienteEstado(int estadoActual, int caracter) {
         int resultado = -1;
         //System.out.println("hey hey hey " + caracter);
-        if (caracter >= 0 && caracter <= 6 && estadoActual!=-1) {
+        if (caracter >= 0 && caracter <= 6 && estadoActual != -1) {
             resultado = matriz[estadoActual][caracter];
             //System.out.println("el matris el resul es "+resultado);
             //////////////////    0     y 6
         }
         return resultado;
     }
-     
-    public enum TipoToken{
+
+    public enum TipoToken {
         IDENTIFICADOR,
         ENTERO,
         DECIMAL,
@@ -132,7 +120,6 @@ public class Analizador {
         OPERADOR,
         ERROR
     }
-
 
     //alfabeto
     public int getIntCaracter(char caracter) {
@@ -146,35 +133,35 @@ public class Analizador {
             } else {
                 if (Character.isLetter(caracter)) {
                     resultado = 2;
-                }else {
-                if (esSignoAgrupacion(caracter)) {
-                    resultado = 4;
-                }else {
-                if (esSignoDePuntuacion(caracter)) {
-                    resultado = 3;
-                }else {
-                if (esOperador(caracter)) {
-                    resultado = 5;
+                } else {
+                    if (esSignoAgrupacion(caracter)) {
+                        resultado = 4;
+                    } else {
+                        if (esSignoDePuntuacion(caracter)) {
+                            resultado = 3;
+                        } else {
+                            if (esOperador(caracter)) {
+                                resultado = 5;
+                            }
+                        }
+                    }
                 }
             }
-            }
-            }
-        }
         }
         //System.out.println(" caracter = "+resultado);
         return resultado;
     }
 
-    public String getEstadoAceptacion(int i){
+    public String getEstadoAceptacion(int i) {
         String res = "ERROR";
         int indice = 0;
         for (int estadoAceptacion : estadosFinalizacion) {
-            
-            if (estadoAceptacion == i){
+
+            if (estadoAceptacion == i) {
                 res = descripcionFinalizacion[indice];
                 break;
-            }else {
-                res="ERROR";
+            } else {
+                res = "ERROR";
             }
             indice++;
         }
@@ -206,11 +193,10 @@ public class Analizador {
                 } else if (Character.isSpace(tmp)) {
 
                     seguirLeyendo = false;
-                    
-                    
+
                     columTmp = 0;
                     fila++;
-                    System.out.println("enter reinicio a posicion "+fila+" , "+columTmp);
+                    System.out.println("enter reinicio a posicion " + fila + " , " + columTmp);
 
                 } else {
                     // para mi automata
@@ -218,22 +204,19 @@ public class Analizador {
                     int estadoTemporal = getSiguienteEstado(estadoActual, getIntCaracter(tmp));
                     if (estadoTemporal == 0) {
                         estadoTemporal = -1;
-                        
+
                     }
                     //                                          4,0
                     System.out.println("Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal);
                     //String moviminetos = "Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal + "\n";
-                    String moviminetos = "S" + estadoActual + " --------- "  + tmp + "-------->  S" + estadoTemporal + "\n";
+                    String moviminetos = "S" + estadoActual + " --------- " + tmp + "-------->  S" + estadoTemporal + "\n";
                     estados.append(moviminetos);
                     token += tmp;
                     estadoActual = estadoTemporal;
-                    
                     estadoA = getEstadoAceptacion(estadoActual);
-                    if (estadoActual == -1) {
+                    
+                    if (estadoActual == -1  ) {
                         seguirLeyendo = false;
-                        contadorErrores++;
-                        Token tokenErrores=new Token(estadoA,token,fila,columTmp);
-                        tokensError.add(tokenErrores);
                     }
 
                     //columTmp=posicion;
@@ -253,15 +236,19 @@ public class Analizador {
 
                 String msj = "***TOKEN " + estadoA + "  : " + token + "\n";
                 
+                if (estadoA.equalsIgnoreCase("ERROR")) {
+                    Token tokenErrores = new Token(estadoA, token, fila, columTmp);
+                        tokensError.add(tokenErrores);
+                        contadorErrores++;
+                }
+
                 //Token tokenO = new Token();
                 System.out.println("Posicion del token es  Fila " + fila + "Columna " + columTmp);
                 //System.out.println(" Posicioon "+posicion+" - "+columTmp+"="+(posicion-columTmp));
                 tokens.add(tokenO);
-                
-                //tokensT[i]=tokenO;
 
+                //tokensT[i]=tokenO;
                 System.out.println(msj);
-                
 
                 //System.out.println("*********Termino en el estado "+ getEstadoAceptacion(estadoActual) + " token actual : "+token);
                 lista.add(msj);
@@ -292,36 +279,6 @@ public class Analizador {
     public ArrayList<Token> getTokensError() {
         return tokensError;
     }
-    
-    //Verifica si es signo de puntuacion
-    public boolean esSignoDePuntuacion(char sig){
-        boolean es=false;
-        switch(sig){
-            case '.':
-                es=true;
-                break;
-            case ',':
-                es=true;
-                break;
-            case ':':
-                es=true;
-                break;
-            case ';':
-                es=true;
-                break;
-        }
-        return es;
-    }
-    
-    //Verfica si es signo de agrupacio
-    public static boolean esSignoAgrupacion(char signo){
-        boolean esAgru=false;
-        char parantesis='(';
-        if (signo=='(' || signo==')' || signo=='[' || signo==']' || signo=='{' || signo=='}') {
-            esAgru=true;
-        }
-        return esAgru;
-    }
 
     public ArrayList<Token> getTokens() {
         return tokens;
@@ -330,35 +287,5 @@ public class Analizador {
     public void setTokens(ArrayList<Token> tokens) {
         this.tokens = tokens;
     }
-    
-    //Verifica si es un operador
-    public static boolean esOperador(char signo){
-        boolean esAgru=false;
-        char parantesis='(';
-        if (signo=='+' || signo=='-' || signo=='/' || signo=='*' || signo=='%') {
-            esAgru=true;
-        }
-        return esAgru;
-    }
-    
-    //Lee un archivo de entrada y lo carga al text area
-    public void cargarArchivos(JTextArea cadenaTxt){
-        JFileChooser fc = new JFileChooser();
-        fc.showOpenDialog(null);
-        File archivo = fc.getSelectedFile();
-        try {
-            FileReader fr = new FileReader(archivo);
-            BufferedReader br= new BufferedReader(fr);
-            String texto="";
-            String linea="";
-            while((linea=br.readLine()) != null) {
-                texto+=linea+"\n";
-            }
-            cadenaTxt.setText(texto);
-            JOptionPane.showMessageDialog(null, "Archivo cargado puede analizarlo");
-        } catch (Exception e) {
-        }
-    }
-    
-    
+
 }

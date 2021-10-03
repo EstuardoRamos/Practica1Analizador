@@ -5,7 +5,9 @@
         <group>
             <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/Identificador.java</file>
             <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/AnalizadorFrame.java</file>
+            <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/ReportError.java</file>
             <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/Main.java</file>
+            <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/VerificadorTipo.java</file>
             <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/ReportesFrame.java</file>
             <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/Analizador.java</file>
             <file>file:/home/estuardo/NetBeansProjects/Practica1Analizador/src/Identificador2/Token.java</file>

@@ -7,11 +7,12 @@ package Identificador2;
  * @author Estuardo Ramos
  */
 public class Token {
-    String nombre;
-    String lexema;
-    int fila;
-    int columna;
-    String posicion;
+    private String nombre;
+    private String lexema;
+    private int fila;
+    private int columna;
+    private String posicion;
+    private int cant;
 
     public Token() {
     }
