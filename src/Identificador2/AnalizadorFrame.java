@@ -39,8 +39,10 @@ public class AnalizadorFrame extends javax.swing.JFrame {
     public AnalizadorFrame() {
         initComponents();
         guardarC.setEnabled(false);
-        TextLineNumber tln = new TextLineNumber(cadenaTxt);
+        //TextLineNumber tln = new TextLineNumber(cadenaTxt);
         //tableEror.setVisible(false);
+        NumeroLinea nL = new NumeroLinea(cadenaTxt);
+        jScrollPane2.setRowHeaderView(nL);
 
     }
 
