@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Identificador2;
+package Identificador2.ventanas;
 
+import Identificador2.Analizador;
+import Identificador2.archivos.ManejadorArchivos;
+import Identificador2.NumeroLinea;
+import Identificador2.Token;
 import java.awt.Color;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -369,7 +373,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
             reportes.setVisible(false);
             tableEror.setVisible(true);
         }
-        llenarTabla(analizador1.tokensError, tableEror);
+        llenarTabla(analizador1.getTokensError(), tableEror);
     }//GEN-LAST:event_AnalizadorActionPerformed
 
     private void btnSelectTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectTxtActionPerformed
@@ -401,37 +405,7 @@ public class AnalizadorFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AnalizadorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AnalizadorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AnalizadorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AnalizadorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AnalizadorFrame().setVisible(true);
-            }
-        });
-    }
+    
 
     public void buscarPalabra(JTextArea area1, String texto) {
         if (texto.length() >= 1) {

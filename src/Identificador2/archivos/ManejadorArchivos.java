@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Identificador2;
+package Identificador2.archivos;
 
 import java.io.BufferedReader;
 import java.io.File;

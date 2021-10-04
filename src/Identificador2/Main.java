@@ -1,5 +1,6 @@
 package Identificador2;
 
+import Identificador2.ventanas.AnalizadorFrame;
 import java.util.Scanner;
 
 

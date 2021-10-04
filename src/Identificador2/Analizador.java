@@ -33,7 +33,6 @@ public class Analizador {
     int columna = 1;
     int filaF = 1;
     TipoDeDato tD;
-     
 
     // filas s1 --> 1 s2 -> 2
     // \digito --> 1
@@ -82,7 +81,7 @@ public class Analizador {
 
         //Signoo de puntucion
         estadosFinalizacion[4] = 6;
-        descripcionFinalizacion[4] = tD.getPUNTUACION().getTipo() ;
+        descripcionFinalizacion[4] = tD.getPUNTUACION().getTipo();
 
         //Signo agrupacion
         estadosFinalizacion[5] = 7;
@@ -131,17 +130,22 @@ public class Analizador {
             if (caracter == '.') {
                 resultado = 1;
             } else {
-                if (Character.isLetter(caracter)) {
-                    resultado = 2;
+                if (caracter == 'ñ') {
+                    resultado = -1;
+                    System.out.println("no aceptado");
                 } else {
-                    if (esSignoAgrupacion(caracter)) {
-                        resultado = 4;
+                    if (Character.isLetter(caracter)) {
+                        resultado = 2;
                     } else {
-                        if (esSignoDePuntuacion(caracter)) {
-                            resultado = 3;
+                        if (esSignoAgrupacion(caracter)) {
+                            resultado = 4;
                         } else {
-                            if (esOperador(caracter)) {
-                                resultado = 5;
+                            if (esSignoDePuntuacion(caracter)) {
+                                resultado = 3;
+                            } else {
+                                if (esOperador(caracter)) {
+                                    resultado = 5;
+                                }
                             }
                         }
                     }
@@ -214,8 +218,8 @@ public class Analizador {
                     token += tmp;
                     estadoActual = estadoTemporal;
                     estadoA = getEstadoAceptacion(estadoActual);
-                    
-                    if (estadoActual == -1  ) {
+
+                    if (estadoActual == -1) {
                         seguirLeyendo = false;
                     }
 
@@ -235,11 +239,11 @@ public class Analizador {
                 Token tokenO = new Token(estadoA, token, filaF, columna);
 
                 String msj = "***TOKEN " + estadoA + "  : " + token + "\n";
-                
+
                 if (estadoA.equalsIgnoreCase("ERROR")) {
                     Token tokenErrores = new Token(estadoA, token, fila, columTmp);
-                        tokensError.add(tokenErrores);
-                        contadorErrores++;
+                    tokensError.add(tokenErrores);
+                    contadorErrores++;
                 }
 
                 //Token tokenO = new Token();

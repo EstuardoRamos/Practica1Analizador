@@ -5,6 +5,8 @@
  */
 package practica1analizador;
 
+import Identificador2.ventanas.AnalizadorFrame;
+
 /**
  *
  * @author Estuardo Ramos
@@ -15,7 +17,9 @@ public class Practica1Analizador {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        AnalizadorFrame af = new AnalizadorFrame();
+        af.setVisible(true);
     }
+
     
 }

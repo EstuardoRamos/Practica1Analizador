@@ -3,10 +3,7 @@
 package Identificador2;
 
 public class Identificador {
-    public static void main(String[] args) {
-        
-    }
-    
+   
     
     /*public static void leer(){
         String palabra=cadena.getText();
