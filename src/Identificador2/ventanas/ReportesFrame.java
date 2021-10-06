@@ -237,45 +237,31 @@ public class ReportesFrame extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-  
-    
-
     public void llenarTabla(ArrayList<Token> token) {
         try {
-            int i = 0;
 
-            /*Token token = new Token("identificador", "hola");
-        reporteTokens.setValueAt(token.getNombre(), 1, 0);
-        reporteTokens.setValueAt(token.getLexema(), 1, 1);*/
-            for (Token token1 : token) {
-                reporteTokens.setValueAt(token1.getNombre(), i, 0);
-                reporteTokens.setValueAt(token1.getLexema(), i, 1);
-                reporteTokens.setValueAt(token1.getPosicion(), i, 2);
-                i++;
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al insertar a tabla");
-        }
-        /*DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("NOmbre");
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Token");
             model.addColumn("Lexema");
             model.addColumn("Posicion");
             model.setRowCount(token.size());
             int i = 0;
-        for (Token token1 : token) {
-            //tableEror.setValueAt(token1.getNombre(), i, 0);
-            model.setValueAt(token1.getNombre(), i, 0);
-            model.setValueAt(token1.getLexema(), i, 1);
-            model.setValueAt(token1.getPosicion(), i, 2);
-            i++;
+            for (Token token1 : token) {
+                //tableEror.setValueAt(token1.getNombre(), i, 0);
+                model.setValueAt(token1.getNombre(), i, 0);
+                model.setValueAt(token1.getLexema(), i, 1);
+                model.setValueAt(token1.getPosicion(), i, 2);
+                i++;
+
+                //new Object[0]("hola", "adios");
+                reporteTokens.setModel(model);
+                //llenarTabla(tokensErrores, tableEror);
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al insertar a tabla");
+        }
         
-            //new Object[0]("hola", "adios");
-            
-            
-           reporteTokens.setModel(model);
-           //llenarTabla(tokensErrores, tableEror);  
-            
-        }*/
     }
 
     public void llenarTablaCantidad(ArrayList<Token> token) {
@@ -308,7 +294,7 @@ public class ReportesFrame extends javax.swing.JFrame {
             //llenarTabla(tokensErrores, tableEror);  
 
         }
-        System.out.println("cant " + noR.toString());
+        
     }
 
     public boolean agragarONo(ArrayList<Token> token, String tok) {

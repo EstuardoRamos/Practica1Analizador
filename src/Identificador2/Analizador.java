@@ -71,13 +71,13 @@ public class Analizador {
         descripcionFinalizacion[0] = tD.ENTERO.getTipo();
         //numero decimal
         estadosFinalizacion[1] = 3;
-        descripcionFinalizacion[1] = "NUMERO " + TipoToken.DECIMAL;
+        descripcionFinalizacion[1] = tD.DECIMAL.getTipo();
 
         //Identifiacdor
         estadosFinalizacion[2] = 4;
-        descripcionFinalizacion[2] = TipoToken.IDENTIFICADOR + "";
+        descripcionFinalizacion[2] = tD.IDENTIFICADOR.getTipo();
         estadosFinalizacion[3] = 5;
-        descripcionFinalizacion[3] = TipoToken.IDENTIFICADOR + "";
+        descripcionFinalizacion[3] = tD.IDENTIFICADOR.getTipo();
 
         //Signoo de puntucion
         estadosFinalizacion[4] = 6;
@@ -85,10 +85,10 @@ public class Analizador {
 
         //Signo agrupacion
         estadosFinalizacion[5] = 7;
-        descripcionFinalizacion[5] = "SIGNO DE " + TipoToken.AGRUPACION;
+        descripcionFinalizacion[5] = tD.AGRUPACION.getTipo();
         //operadores
         estadosFinalizacion[6] = 8;
-        descripcionFinalizacion[6] = "" + TipoToken.OPERADOR;
+        descripcionFinalizacion[6] = tD.OPERADOR.getTipo();
     }
 
     /* public static void main(String[] args) {
@@ -101,11 +101,10 @@ public class Analizador {
     //revisa movimiento den la matriz
     public int getSiguienteEstado(int estadoActual, int caracter) {
         int resultado = -1;
-        //System.out.println("hey hey hey " + caracter);
+        
         if (caracter >= 0 && caracter <= 6 && estadoActual != -1) {
             resultado = matriz[estadoActual][caracter];
-            //System.out.println("el matris el resul es "+resultado);
-            //////////////////    0     y 6
+            
         }
         return resultado;
     }
@@ -132,7 +131,6 @@ public class Analizador {
             } else {
                 if (caracter == 'ñ') {
                     resultado = -1;
-                    System.out.println("no aceptado");
                 } else {
                     if (Character.isLetter(caracter)) {
                         resultado = 2;
@@ -183,11 +181,10 @@ public class Analizador {
             boolean seguirLeyendo = true;
             char tmp;
             String estadoA = null;
-            //Token tokenO = new Token();
-            //Token tokenErrores = new Token();
+            
 
             while ((seguirLeyendo) && (posicion < palabra.length())) {
-                //System.out.println("tmp en while "+tmp);
+                
                 tmp = palabra.charAt(posicion);
 
                 if (Character.isSpaceChar(tmp)) {
@@ -200,20 +197,14 @@ public class Analizador {
 
                     columTmp = 0;
                     fila++;
-                    System.out.println("enter reinicio a posicion " + fila + " , " + columTmp);
-
                 } else {
-                    // para mi automata
-
                     int estadoTemporal = getSiguienteEstado(estadoActual, getIntCaracter(tmp));
                     if (estadoTemporal == 0) {
                         estadoTemporal = -1;
 
                     }
                     //                                          4,0
-                    System.out.println("Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal);
-                    //String moviminetos = "Estado actual " + estadoActual + " caracter " + tmp + " transicion a " + estadoTemporal + "\n";
-                    String moviminetos = "S" + estadoActual + " --------- " + tmp + "-------->  S" + estadoTemporal + "\n";
+                  String moviminetos = "S" + estadoActual + " --------- " + tmp + "-------->  S" + estadoTemporal + "\n";
                     estados.append(moviminetos);
                     token += tmp;
                     estadoActual = estadoTemporal;
@@ -224,13 +215,10 @@ public class Analizador {
                     }
 
                     //columTmp=posicion;
-                    System.out.println(tmp);
-                    System.out.println("Fila " + fila + " Columna " + columTmp);
                     columna = columTmp;
                     filaF = fila;
 
                 }
-                //
                 columTmp++;
                 posicion++;
             }
@@ -246,15 +234,8 @@ public class Analizador {
                     contadorErrores++;
                 }
 
-                //Token tokenO = new Token();
-                System.out.println("Posicion del token es  Fila " + fila + "Columna " + columTmp);
-                //System.out.println(" Posicioon "+posicion+" - "+columTmp+"="+(posicion-columTmp));
+                
                 tokens.add(tokenO);
-
-                //tokensT[i]=tokenO;
-                System.out.println(msj);
-
-                //System.out.println("*********Termino en el estado "+ getEstadoAceptacion(estadoActual) + " token actual : "+token);
                 lista.add(msj);
                 TOK.append(msj);
                 i++;
@@ -264,11 +245,6 @@ public class Analizador {
             // verificar el estado de aceptación
         }
         System.out.println("Cantidad de errores: " + contadorErrores);
-        System.out.println("tok" + tokens.toString() + "\n");
-
-        //rf.llenarTabla(tokens);
-        //rf.setVisible(true);
-        //System.out.println("cant tok " + i);
         return lista;
     }
 
