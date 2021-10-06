@@ -16,10 +16,10 @@ public class Practica1Analizador {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         AnalizadorFrame af = new AnalizadorFrame();
         af.setVisible(true);
-    }
+    }*/
 
     
 }
