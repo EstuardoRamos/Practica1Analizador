@@ -151,7 +151,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Contadior de tokens"/>
+        <Property name="text" type="java.lang.String" value="Contador de tokens"/>
       </Properties>
     </Component>
   </SubComponents>

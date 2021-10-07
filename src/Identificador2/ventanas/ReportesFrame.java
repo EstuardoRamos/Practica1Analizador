@@ -19,8 +19,11 @@ public class ReportesFrame extends javax.swing.JFrame {
     /**
      * Creates new form ReportesFrame
      */
+    
+    
     public ReportesFrame() {
         initComponents();
+        
 
         //reporteTokens.setValueAt(token.getNombre(), 1, 1);
     }
@@ -188,7 +191,7 @@ public class ReportesFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Reportes de tokens");
 
-        jLabel2.setText("Contadior de tokens");
+        jLabel2.setText("Contador de tokens");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -266,13 +269,9 @@ public class ReportesFrame extends javax.swing.JFrame {
 
     public void llenarTablaCantidad(ArrayList<Token> token) {
         ArrayList<Token> noR = new ArrayList();
-        DefaultTableModel model = new DefaultTableModel();
-        //model.addColumn("NOmbre");
-        model.addColumn("Lexema");
-        model.addColumn("Token ");
-        model.addColumn("Cantidad ");
-        model.setRowCount(token.size());
-        int i = 0;
+        
+        
+        
         for (Token token1 : token) {
             int cantidad = 0;
             String lex = "";
@@ -282,19 +281,39 @@ public class ReportesFrame extends javax.swing.JFrame {
                 }
             }
             if (agragarONo(noR, token1.getLexema())) {
+                token1.setCant(cantidad);
                 noR.add(token1);
                 System.out.println("toke " + token1.getLexema() + "  " + cantidad);
-                model.setValueAt(token1.getLexema(), i, 0);
-                model.setValueAt(token1.getNombre(), i, 1);
-                model.setValueAt(cantidad, i, 2);
-                i++;
+                
+                System.out.println("token 2 " + token1.getLexema() + "  " + token1.getCant());
+                
+                
             }
 
-            tableCant.setModel(model);
+            
             //llenarTabla(tokensErrores, tableEror);  
 
         }
+        llenadaCantidad(noR);
         
+    }
+    public void llenadaCantidad(ArrayList<Token> token){
+        DefaultTableModel model1 = new DefaultTableModel();
+        //model.addColumn("NOmbre");
+        
+        model1.addColumn("Lexema");
+        model1.addColumn("Token ");
+        model1.addColumn("Cantidad ");
+        model1.setRowCount(token.size());
+        int i = 0;
+        for (Token token1 : token) {
+            model1.setValueAt(token1.getLexema(), i, 0);
+                model1.setValueAt(token1.getNombre(), i, 1);
+                model1.setValueAt(token1.getCant(), i, 2);
+                i++;
+            
+        }
+        tableCant.setModel(model1);
     }
 
     public boolean agragarONo(ArrayList<Token> token, String tok) {
@@ -306,6 +325,10 @@ public class ReportesFrame extends javax.swing.JFrame {
         }
         return true;
     }
+    
+    void reset() {
+  
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

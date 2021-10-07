@@ -24,7 +24,15 @@ public class Token {
         this.lexema = lexema;
         this.fila = fila;
         this.columna = columna;
-        this.posicion="Fila: "+fila+", Columna"+columna;
+        this.posicion="Fila: "+fila+", Columna "+columna;
+    }
+
+    public int getCant() {
+        return cant;
+    }
+
+    public void setCant(int cant) {
+        this.cant = cant;
     }
 
     public Token(String nombre, String lexema) {
